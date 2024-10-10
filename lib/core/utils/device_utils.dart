@@ -5,4 +5,8 @@ class DeviceUtil {
   static double bottomPadding(BuildContext context) {
     return MediaQuery.of(context).viewPadding.bottom + 16.r;
   }
+
+  static double topPadding(BuildContext context) {
+    return MediaQuery.of(context).viewPadding.top + 16.r;
+  }
 }

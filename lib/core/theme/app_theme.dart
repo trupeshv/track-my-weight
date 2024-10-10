@@ -22,5 +22,34 @@ class AppTheme {
     hoverColor: ColorConstants.transparent,
     focusColor: ColorConstants.transparent,
     scaffoldBackgroundColor: ColorConstants.whiteFFFFFF,
+    timePickerTheme: TimePickerThemeData(
+      shape: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14.r),
+      ),
+      backgroundColor: ColorConstants.whiteFFFFFF,
+      dialHandColor: ColorConstants.green009688,
+      dialBackgroundColor: ColorConstants.greyAAAAAA.withOpacity(.1),
+      dayPeriodColor: ColorConstants.greyAAAAAA.withOpacity(.3),
+      dayPeriodTextColor: ColorConstants.black000000,
+      hourMinuteTextColor: ColorConstants.black000000,
+      hourMinuteColor: ColorConstants.greyAAAAAA.withOpacity(.1),
+      confirmButtonStyle: ButtonStyle(
+          textStyle: WidgetStatePropertyAll(TextStyle(
+              color: ColorConstants.black000000,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w500,
+              fontFamily: FONT_FAMILY_ROBOTO))),
+      cancelButtonStyle: ButtonStyle(
+          textStyle: WidgetStatePropertyAll(TextStyle(
+        color: ColorConstants.black000000,
+        fontSize: 15.sp,
+        fontWeight: FontWeight.w500,
+        fontFamily: FONT_FAMILY_ROBOTO,
+      ))),
+    ),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: ColorConstants.green009688,
+      primary: ColorConstants.green009688,
+    ),
   );
 }

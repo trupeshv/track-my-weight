@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:track_my_weight/core/constants/constants.dart';
 import 'package:track_my_weight/core/navigator/app_router.dart';
@@ -18,7 +19,6 @@ class App extends StatefulWidget {
 }
 
 class AppState extends State<App> {
-
   @override
   void initState() {
     SystemChrome.setPreferredOrientations([
@@ -30,10 +30,10 @@ class AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Platform.isIOS ? Brightness.light : Brightness.dark,
+      statusBarIconBrightness: Platform.isIOS ? Brightness.light : Brightness.dark,
     ));
     return ScreenUtilInit(
         designSize: const Size(375, 812),
@@ -51,7 +51,7 @@ class AppState extends State<App> {
             routeInformationParser: _router.defaultRouteParser(),
             routerDelegate: _router.delegate(),
             theme: AppTheme.theme,
-            locale: Locale(LANG_ENGLISH),
+            locale: const Locale(LANG_ENGLISH),
           );
         });
   }

@@ -98,6 +98,15 @@ textStyle16WithW600(Color color) {
   );
 }
 
+textStyle26WithW600(Color color) {
+  return TextStyle(
+    color: color,
+    fontSize: 26.sp,
+    fontFamily: FONT_FAMILY_ROBOTO,
+    fontWeight: FontWeight.w600,
+  );
+}
+
 ///700
 textStyle14WithW700(Color color) {
   return TextStyle(
