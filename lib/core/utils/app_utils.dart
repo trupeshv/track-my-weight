@@ -14,3 +14,14 @@ class AppUtils {
     return weightRegExp.hasMatch(input);
   }
 }
+
+extension DayOfYear on DateTime {
+  int get dayOfYear {
+    int dayCount = 0;
+    for (int month = 1; month < this.month; month++) {
+      dayCount += DateTime(year, month + 1, 0).day;
+    }
+    dayCount += day;
+    return dayCount;
+  }
+}

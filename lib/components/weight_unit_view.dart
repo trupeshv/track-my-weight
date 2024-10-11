@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:track_my_weight/core/constants/color_constants.dart';
 import 'package:track_my_weight/core/constants/text_styles.dart';
+import 'package:track_my_weight/models/enums.dart';
 
 class WeightUnitView extends StatefulWidget {
-  final Function(String value) selectedValue;
+  final Function(WeightUnit value) selectedValue;
   final bool? unitInKg;
 
   const WeightUnitView({super.key, required this.selectedValue, this.unitInKg});
@@ -40,9 +41,6 @@ class _WeightUnitViewState extends State<WeightUnitView> with TickerProviderStat
     return ClipRRect(
       borderRadius: BorderRadius.circular(6.r),
       child: Container(
-        width: 72.w,
-        height: 40.h,
-        margin: EdgeInsets.symmetric(horizontal: 8.r, vertical: 6.r),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.r),
             color: ColorConstants.whiteFFFFFF,
@@ -56,7 +54,7 @@ class _WeightUnitViewState extends State<WeightUnitView> with TickerProviderStat
           onTap: (index) {
             setState(() {
               controller.index = index;
-              widget.selectedValue(controller.index == 0 ? "KG" : "LB");
+              widget.selectedValue(controller.index == 0 ? WeightUnit.KG : WeightUnit.LB);
             });
           },
           isScrollable: false,
@@ -72,8 +70,8 @@ class _WeightUnitViewState extends State<WeightUnitView> with TickerProviderStat
             ),
           ),
           tabs: [
-            _buildTab(label: "KG", isSelected: controller.index == 0),
-            _buildTab(label: "LB", isSelected: controller.index == 1),
+            _buildTab(label: WeightUnit.KG.name, isSelected: controller.index == 0),
+            _buildTab(label: WeightUnit.LB.name, isSelected: controller.index == 1),
           ],
         ),
       ),

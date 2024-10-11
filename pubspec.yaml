@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  #icons and images
+  #icons_and_images
   cupertino_icons: ^1.0.8
   flutter_svg: ^2.0.10+1
 
@@ -30,8 +30,11 @@ dependencies:
   flutter_bloc: ^8.1.6
   bloc_concurrency: ^0.2.5
 
-  #Notification
+  #notification
   flutter_local_notifications: ^17.2.3
+
+  #json_model
+  json_annotation: ^4.9.0
 
 
 dev_dependencies:
@@ -41,6 +44,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.11
   auto_route_generator: ^9.0.0
+  json_serializable: ^6.8.0
 
 flutter:
 

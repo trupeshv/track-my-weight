@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:track_my_weight/common_components/text_field_view.dart';
+import 'package:track_my_weight/components/text_field_view.dart';
 import 'package:track_my_weight/core/constants/color_constants.dart';
 import 'package:track_my_weight/core/constants/text_styles.dart';
 
@@ -82,6 +82,7 @@ class _AppFieldViewState extends State<AppFieldView> {
                 keyboardType: widget.keyboardType ?? TextInputType.text,
                 suffixIcon: widget.suffixIcon,
                 readonly: widget.readonly,
+                textCapitalization: TextCapitalization.sentences,
                 textInputAction: widget.textInputAction ?? TextInputAction.next,
                 onChanged: (newValue) {
                   int cursorPosition = controller.selection.baseOffset;
