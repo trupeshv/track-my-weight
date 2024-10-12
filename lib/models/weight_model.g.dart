@@ -18,14 +18,21 @@ Map<String, dynamic> _$RecordModelToJson(RecordModel instance) =>
     };
 
 WeightModel _$WeightModelFromJson(Map<String, dynamic> json) => WeightModel(
-      weight: (json['weight'] as num?)?.toDouble(),
+      weight: json['weight'] as String?,
       recordDate: json['recordDate'] == null
           ? null
           : DateTime.parse(json['recordDate'] as String),
+      unit: $enumDecodeNullable(_$WeightUnitEnumMap, json['unit']),
     );
 
 Map<String, dynamic> _$WeightModelToJson(WeightModel instance) =>
     <String, dynamic>{
       'weight': instance.weight,
       'recordDate': instance.recordDate?.toIso8601String(),
+      'unit': _$WeightUnitEnumMap[instance.unit],
     };
+
+const _$WeightUnitEnumMap = {
+  WeightUnit.KG: 'KG',
+  WeightUnit.LB: 'LB',
+};

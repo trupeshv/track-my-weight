@@ -20,13 +20,6 @@ class _WeightUnitViewState extends State<WeightUnitView> with TickerProviderStat
   @override
   void initState() {
     controller = TabController(length: 2, vsync: this);
-    if (widget.unitInKg != null) {
-      if (widget.unitInKg == true) {
-        controller.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.linear);
-      } else {
-        controller.animateTo(1, duration: const Duration(milliseconds: 400), curve: Curves.linear);
-      }
-    }
     super.initState();
   }
 
@@ -38,6 +31,13 @@ class _WeightUnitViewState extends State<WeightUnitView> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    if (widget.unitInKg != null) {
+      if (widget.unitInKg == true) {
+        controller.animateTo(0, duration: const Duration(milliseconds: 400), curve: Curves.linear);
+      } else {
+        controller.animateTo(1, duration: const Duration(milliseconds: 400), curve: Curves.linear);
+      }
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(6.r),
       child: Container(

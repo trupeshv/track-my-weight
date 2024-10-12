@@ -7,5 +7,6 @@ class AppRouter extends RootStackRouter {
   List<AutoRoute> get routes => [
         CupertinoRoute(page: SplashRoute.page, initial: true),
         CupertinoRoute(page: ProfileRoute.page),
+        CupertinoRoute(page: HomeRoute.page),
       ];
 }

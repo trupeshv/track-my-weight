@@ -1,14 +1,15 @@
-import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:track_my_weight/application/bloc.dart';
 import 'package:track_my_weight/core/constants/color_constants.dart';
 import 'package:track_my_weight/core/constants/image_constants.dart';
 import 'package:track_my_weight/core/constants/text_styles.dart';
 import 'package:track_my_weight/core/navigator/app_router.gr.dart';
-import 'package:track_my_weight/core/utils/notification_utils.dart';
+import 'package:track_my_weight/core/persistence/preference_helper.dart';
+import 'package:track_my_weight/models/user_model.dart';
 
 @RoutePage()
 class SplashPage extends StatefulWidget {
@@ -20,13 +21,19 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   late AnimationController controller;
+  UserDataModel? userData;
 
   @override
   void initState() {
     controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
     _startAnimations();
-    initNotification();
+    getUserData();
+    context.read<AppBloc>().add(InitNotification());
     super.initState();
+  }
+
+  Future<void> getUserData() async {
+    userData = await PreferenceHelper.getUserData();
   }
 
   Future<void> _startAnimations() async {
@@ -34,31 +41,15 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       () {
         Future.delayed(const Duration(milliseconds: 300), () {
           if (mounted) {
-            context.router.push(ProfileRoute());
+            if (userData != null) {
+              context.router.replace(const HomeRoute());
+            } else {
+              context.router.replace(ProfileRoute());
+            }
           }
         });
       },
     );
-  }
-
-  Future<void> initNotification() async {
-    if (Platform.isAndroid) {
-      final AndroidFlutterLocalNotificationsPlugin? androidImplementation = NotificationUtils()
-          .notificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-
-      await androidImplementation?.requestNotificationsPermission();
-    }
-    if (Platform.isIOS) {
-      await NotificationUtils()
-          .notificationsPlugin
-          .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-    }
   }
 
   @override

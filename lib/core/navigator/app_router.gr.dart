@@ -8,37 +8,57 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:flutter/material.dart' as _i4;
-import 'package:track_my_weight/pages/profile_page.dart' as _i1;
-import 'package:track_my_weight/pages/splash_page.dart' as _i2;
+import 'package:auto_route/auto_route.dart' as _i4;
+import 'package:flutter/material.dart' as _i5;
+import 'package:track_my_weight/pages/home_page.dart' as _i1;
+import 'package:track_my_weight/pages/profile_page.dart' as _i2;
+import 'package:track_my_weight/pages/splash_page.dart' as _i3;
 
 /// generated route for
-/// [_i1.ProfilePage]
-class ProfileRoute extends _i3.PageRouteInfo<ProfileRouteArgs> {
+/// [_i1.HomePage]
+class HomeRoute extends _i4.PageRouteInfo<void> {
+  const HomeRoute({List<_i4.PageRouteInfo>? children})
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomeRoute';
+
+  static _i4.PageInfo page = _i4.PageInfo(
+    name,
+    builder: (data) {
+      return const _i1.HomePage();
+    },
+  );
+}
+
+/// generated route for
+/// [_i2.ProfilePage]
+class ProfileRoute extends _i4.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
-    _i4.Key? key,
-    bool isFromSetting = false,
-    List<_i3.PageRouteInfo>? children,
+    _i5.Key? key,
+    bool isForUpdate = false,
+    List<_i4.PageRouteInfo>? children,
   }) : super(
           ProfileRoute.name,
           args: ProfileRouteArgs(
             key: key,
-            isFromSetting: isFromSetting,
+            isForUpdate: isForUpdate,
           ),
           initialChildren: children,
         );
 
   static const String name = 'ProfileRoute';
 
-  static _i3.PageInfo page = _i3.PageInfo(
+  static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
       final args =
           data.argsAs<ProfileRouteArgs>(orElse: () => const ProfileRouteArgs());
-      return _i1.ProfilePage(
+      return _i2.ProfilePage(
         key: args.key,
-        isFromSetting: args.isFromSetting,
+        isForUpdate: args.isForUpdate,
       );
     },
   );
@@ -47,23 +67,23 @@ class ProfileRoute extends _i3.PageRouteInfo<ProfileRouteArgs> {
 class ProfileRouteArgs {
   const ProfileRouteArgs({
     this.key,
-    this.isFromSetting = false,
+    this.isForUpdate = false,
   });
 
-  final _i4.Key? key;
+  final _i5.Key? key;
 
-  final bool isFromSetting;
+  final bool isForUpdate;
 
   @override
   String toString() {
-    return 'ProfileRouteArgs{key: $key, isFromSetting: $isFromSetting}';
+    return 'ProfileRouteArgs{key: $key, isForUpdate: $isForUpdate}';
   }
 }
 
 /// generated route for
-/// [_i2.SplashPage]
-class SplashRoute extends _i3.PageRouteInfo<void> {
-  const SplashRoute({List<_i3.PageRouteInfo>? children})
+/// [_i3.SplashPage]
+class SplashRoute extends _i4.PageRouteInfo<void> {
+  const SplashRoute({List<_i4.PageRouteInfo>? children})
       : super(
           SplashRoute.name,
           initialChildren: children,
@@ -71,10 +91,10 @@ class SplashRoute extends _i3.PageRouteInfo<void> {
 
   static const String name = 'SplashRoute';
 
-  static _i3.PageInfo page = _i3.PageInfo(
+  static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      return const _i2.SplashPage();
+      return const _i3.SplashPage();
     },
   );
 }

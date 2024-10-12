@@ -8,6 +8,7 @@ import 'package:track_my_weight/components/weight_unit_view.dart';
 import 'package:track_my_weight/core/constants/color_constants.dart';
 import 'package:track_my_weight/core/constants/image_constants.dart';
 import 'package:track_my_weight/core/constants/text_styles.dart';
+import 'package:track_my_weight/core/navigator/app_router.gr.dart';
 import 'package:track_my_weight/core/persistence/preference_helper.dart';
 import 'package:track_my_weight/core/utils/device_utils.dart';
 import 'package:track_my_weight/models/enums.dart';
@@ -17,9 +18,9 @@ import '../application/bloc.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
-  final bool isFromSetting;
+  final bool isForUpdate;
 
-  const ProfilePage({super.key, this.isFromSetting = false});
+  const ProfilePage({super.key, this.isForUpdate = false});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -37,23 +38,21 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    isFromSetting = widget.isFromSetting;
+    isFromSetting = widget.isForUpdate;
     getUserData();
     super.initState();
   }
 
   Future<void> getUserData() async {
     userData = await PreferenceHelper.getUserData();
-    if(userData != null) {
+    if (userData != null) {
       firstNameController.text = userData?.firstName ?? "";
-      lastNameController.text = userData?.firstName ?? "";
+      lastNameController.text = userData?.lastName ?? "";
       scheduleTimeController.text = userData?.scheduleTime != null
-          ? "${userData?.scheduleTime?.hourOfPeriod}:${userData?.scheduleTime?.minute
-          .toString()
-          .length == 1 ? "0${userData?.scheduleTime?.minute}" : userData?.scheduleTime
-          ?.minute} ${userData?.scheduleTime?.period.name.toUpperCase()}"
+          ? "${userData?.scheduleTime?.hourOfPeriod}:${userData?.scheduleTime?.minute.toString().length == 1 ? "0${userData?.scheduleTime?.minute}" : userData?.scheduleTime?.minute} ${userData?.scheduleTime?.period.name.toUpperCase()}"
           : '';
       selectedUnit = userData?.weightUnit ?? selectedUnit;
+      selectedTime = userData?.scheduleTime ?? selectedTime;
     }
     setState(() {});
   }
@@ -64,15 +63,22 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: ColorConstants.whiteFFFFFF,
         body: Align(
           alignment: isFromSetting ? Alignment.topCenter : Alignment.center,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.r),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: DeviceUtil.topPadding(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.only(
+                    top: DeviceUtil.topPadding(context), left: 16.r, right: 16.r, bottom: 16.r),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      ColorConstants.green009688.withOpacity(.5),
+                      ColorConstants.green00796B.withOpacity(.35),
+                    ],
+                  ),
                 ),
-                Row(
+                child: Row(
                   children: [
                     if (isFromSetting) ...[
                       InkWell(
@@ -95,125 +101,145 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                if (!isFromSetting) ...[
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  Text(
-                    "Please enter your name and choose when you'd like to be reminded to record your weight each day.",
-                    style: textStyle12WithW400(ColorConstants.greyAAAAAA),
-                  ),
-                ],
-                SizedBox(
-                  height: 60.h,
-                ),
+              ),
 
-                /// Name of the user
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: AppFieldView(
-                        text: "First Name",
-                        controller: firstNameController,
-                        isRequiredText: true,
-                        onChanged: (value) {},
-                        hintText: "John",
-                      ),
-                    ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: AppFieldView(
-                        text: "Last Name",
-                        controller: lastNameController,
-                        isRequiredText: true,
-                        onChanged: (value) {},
-                        hintText: "Deo",
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-
-                /// Notification schedule time
-                AppFieldView(
-                  text: "Notification Schedule Time",
-                  isRequiredText: true,
-                  onChanged: (value) {},
-                  hintText: "00:00 AM",
-                  readonly: true,
-                  controller: scheduleTimeController,
-                  textInputAction: TextInputAction.done,
-                  onTap: () async {
-                    TimeOfDay? result = await showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                      initialEntryMode: TimePickerEntryMode.dialOnly,
-                      builder: (context, child) {
-                        return Container(child: child);
-                      },
-                    );
-                    if (result != null) {
-                      scheduleTimeController.text =
-                          "${result.hourOfPeriod}:${result.minute.toString().length == 1 ? "0${result.minute}" : result.minute} ${result.period.name.toUpperCase()}";
-                      selectedTime = result;
-                      setState(() {});
-                    }
-                  },
-                ),
-                SizedBox(height: 20.h),
-
-                /// Current weight
-                RichText(
-                  text: TextSpan(
-                    text: "Unit",
-                    style: textStyle16WithW500(ColorConstants.black000000),
+              /// Name of the user
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSpan(
-                        text: ' *',
-                        style: textStyle16WithW500(Colors.red), // Red asterisk
+                      if (!isFromSetting) ...[
+                        SizedBox(
+                          height: 8.h,
+                        ),
+                        Text(
+                          "Please enter your name and choose when you'd like to be reminded to record your weight each day.",
+                          style: textStyle12WithW400(ColorConstants.greyAAAAAA),
+                        ),
+                      ],
+                      SizedBox(
+                        height: 20.h,
                       ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: AppFieldView(
+                              text: "First Name",
+                              controller: firstNameController,
+                              isRequiredText: true,
+                              onChanged: (value) {},
+                              hintText: "John",
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: AppFieldView(
+                              text: "Last Name",
+                              controller: lastNameController,
+                              isRequiredText: true,
+                              onChanged: (value) {},
+                              hintText: "Deo",
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+
+                      /// Notification schedule time
+                      AppFieldView(
+                        text: "Notification Schedule Time",
+                        isRequiredText: true,
+                        onChanged: (value) {},
+                        hintText: "00:00 AM",
+                        readonly: true,
+                        controller: scheduleTimeController,
+                        textInputAction: TextInputAction.done,
+                        onTap: () async {
+                          TimeOfDay? result = await showTimePicker(
+                            context: context,
+                            initialTime: selectedTime,
+                            initialEntryMode: TimePickerEntryMode.dialOnly,
+                            builder: (context, child) {
+                              return Container(child: child);
+                            },
+                          );
+                          if (result != null) {
+                            scheduleTimeController.text =
+                                "${result.hourOfPeriod}:${result.minute.toString().length == 1 ? "0${result.minute}" : result.minute} ${result.period.name.toUpperCase()}";
+                            selectedTime = result;
+                            setState(() {});
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20.h),
+
+                      /// Current weight
+                      RichText(
+                        text: TextSpan(
+                          text: "Unit",
+                          style: textStyle16WithW500(ColorConstants.black000000),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: textStyle16WithW500(Colors.red), // Red asterisk
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 6.h),
+                      WeightUnitView(
+                        unitInKg: selectedUnit == WeightUnit.KG,
+                        selectedValue: (value) {
+                          if (value == WeightUnit.LB && selectedUnit != WeightUnit.LB) {
+                          } else if (value == WeightUnit.KG && selectedUnit != WeightUnit.KG) {}
+                          selectedUnit = value;
+                          setState(() {});
+                        },
+                      ),
+                      SizedBox(height: 60.h),
+
+                      /// Save button
+                      BlocConsumer<AppBloc, AppState>(listener: (context, state) {
+                        if (state is SavedUserData) {
+                          if (isFromSetting) {
+                            context.router.maybePop();
+                          } else {
+                            context.router.replace(const HomeRoute());
+                          }
+                        }
+                      }, builder: (context, state) {
+                        return AppButton(
+                          width: double.infinity,
+                          text: isFromSetting ? "Save" : "Save & Continue",
+                          opacity: isValidDetails() ? null : .2,
+                          padding: EdgeInsets.symmetric(vertical: 16.r),
+                          margin: EdgeInsets.symmetric(horizontal: 8.r),
+                          textStyle: textStyle16WithW500(ColorConstants.whiteFFFFFF),
+                          onTap: isValidDetails()
+                              ? () {
+                                  context.read<AppBloc>().add(SaveUserData(
+                                      userData: UserDataModel(
+                                          firstName: firstNameController.text.trim(),
+                                          lastName: lastNameController.text.trim(),
+                                          weightUnit: selectedUnit,
+                                          scheduleTime: selectedTime)));
+                                }
+                              : null,
+                        );
+                      }),
+                      SizedBox(
+                        height: DeviceUtil.bottomPadding(context),
+                      )
                     ],
                   ),
                 ),
-                SizedBox(height: 6.h),
-                WeightUnitView(
-                  unitInKg: selectedUnit == WeightUnit.KG,
-                  selectedValue: (value) {
-                    if (value == WeightUnit.LB && selectedUnit != WeightUnit.LB) {
-                    } else if (value == WeightUnit.KG && selectedUnit != WeightUnit.KG) {}
-                    selectedUnit = value;
-                    setState(() {});
-                  },
-                ),
-                SizedBox(height: 60.h),
-
-                /// Save button
-                AppButton(
-                  width: double.infinity,
-                  text: isFromSetting ? "Save" : "Save & Continue",
-                  opacity: isValidDetails() ? null : .2,
-                  padding: EdgeInsets.symmetric(vertical: 16.r),
-                  margin: EdgeInsets.symmetric(horizontal: 8.r),
-                  textStyle: textStyle16WithW500(ColorConstants.whiteFFFFFF),
-                  onTap: isValidDetails()
-                      ? () {
-                          context.read<AppBloc>().add(SaveUserData(
-                              userData: UserDataModel(
-                                  firstName: firstNameController.text.trim(),
-                                  lastName: lastNameController.text.trim(),
-                                  weightUnit: selectedUnit,
-                                  scheduleTime: selectedTime)));
-                        }
-                      : null,
-                ),
-                SizedBox(
-                  height: DeviceUtil.bottomPadding(context),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }

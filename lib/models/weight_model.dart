@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:track_my_weight/core/constants/constants.dart';
-import 'enums.dart';
+import 'package:track_my_weight/models/enums.dart';
 
 part 'weight_model.g.dart';
 
@@ -17,10 +17,11 @@ class RecordModel {
 
 @JsonSerializable()
 class WeightModel {
-  double? weight;
+  String? weight;
   DateTime? recordDate;
+  WeightUnit? unit;
 
-  WeightModel({this.weight, this.recordDate});
+  WeightModel({this.weight, this.recordDate, this.unit});
 
   factory WeightModel.fromJson(Json json) => _$WeightModelFromJson(json);
 

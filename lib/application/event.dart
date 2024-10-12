@@ -10,3 +10,10 @@ class SaveUserData extends AppEvent {
   const SaveUserData({required this.userData});
 }
 
+class InitNotification extends AppEvent{}
+
+class SaveRecord extends AppEvent{
+  final WeightModel weightData;
+
+  const SaveRecord({required this.weightData});
+}

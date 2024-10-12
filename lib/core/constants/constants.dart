@@ -8,7 +8,11 @@ const String LANG_ENGLISH = "en";
 ///Fonts
 const String FONT_FAMILY_ROBOTO = "Roboto";
 
+/// General Text
 const String TRACK_MY_WEIGHT = "Track My Weight";
+
+/// Date formats
+const String TIMESTAMP_FORMAT_DD_MM_YYYY = "MMM dd, yyyy";
 
 List<NotificationModel> dailyNotificationList = [
   NotificationModel(
